@@ -18,7 +18,7 @@ public class UserProfile implements UserDetails {
     private Gender gender;
     private Address address;
     private long createdTs;
-    private String userName;
+    private String username;
     private String password;
     private Role role;
 
@@ -37,14 +37,9 @@ public class UserProfile implements UserDetails {
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
 
     public String getId() {
         return id;
@@ -107,7 +102,7 @@ public class UserProfile implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

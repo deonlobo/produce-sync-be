@@ -24,7 +24,7 @@ public class AuthController {
         return createUserService.createUser(userProfile);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @CrossOrigin
     public ResponseEntity<AuthenticationResponse> loginSeller(@RequestBody UserProfile userProfile) {
         return ResponseEntity.ok(createUserService.authenticate(userProfile));

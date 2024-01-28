@@ -33,7 +33,7 @@ public class CreateUserServiceImpl implements CreateUserService {
     @Override
     public ResponseEntity<AuthenticationResponse> createUser(UserProfile userProfile) {
         try {
-            UserProfile existingUserProfile = repository.findByUserName(userProfile.getUserName());
+            UserProfile existingUserProfile = repository.findByUsername(userProfile.getUsername());
             if(Objects.nonNull(existingUserProfile)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthenticationResponse());
             }
@@ -59,10 +59,10 @@ public class CreateUserServiceImpl implements CreateUserService {
     public AuthenticationResponse authenticate(UserProfile userProfile) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        userProfile.getUserName(),
+                        userProfile.getUsername(),
                         userProfile.getPassword()
                 ));
-        var user = repository.findByUserName(userProfile.getUserName());
+        var user = repository.findByUsername(userProfile.getUsername());
         var jwtToken = jwtService.generateToken(userProfile);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);

@@ -18,7 +18,7 @@ public class ApplicationConfig {
     UserProfileRepository repository;
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> repository.findByUserName(username);
+        return username -> repository.findByUsername(username);
     }
 
     @Bean
