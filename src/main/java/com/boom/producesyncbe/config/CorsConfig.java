@@ -1,6 +1,10 @@
 package com.boom.producesyncbe.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,7 +16,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")// Adjust the mapping pattern as needed
                 .allowedOrigins("http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);;
 
         registry.addMapping("/buyer/**")
                 .allowedOrigins("http://localhost:5173")

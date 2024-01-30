@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers( "/seller/**").hasAnyAuthority(SELLER.name())
-                        .requestMatchers( "/seller/**").hasAnyAuthority(BUYER.name())
+                        .requestMatchers( "/buyer/**").hasAnyAuthority(BUYER.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
