@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/seller")
-public class SellerController {
-
+@RequestMapping("/buyer")
+public class BuyerController {
     @GetMapping("/hello")
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hello from secured endpoint");
+        return ResponseEntity.ok("Hello from secured buyer endpoint");
     }
 }

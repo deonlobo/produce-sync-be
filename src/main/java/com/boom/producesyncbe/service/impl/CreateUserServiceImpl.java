@@ -31,15 +31,16 @@ public class CreateUserServiceImpl implements CreateUserService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Override
-    public ResponseEntity<AuthenticationResponse> createUser(UserProfile userProfile) {
+    public ResponseEntity<AuthenticationResponse> createUser(UserProfile userProfile,Role role) {
         try {
             UserProfile existingUserProfile = repository.findByUsername(userProfile.getUsername());
             if(Objects.nonNull(existingUserProfile)){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthenticationResponse());
             }
-            userProfile.setId(autoIncrementService.getOrUpdateIdCount(userProfile.getRole().toString()));
+            userProfile.setId(autoIncrementService.getOrUpdateIdCount(role.name()));
             userProfile.setCreatedTs(Instant.now().toEpochMilli());
             userProfile.setPassword(passwordEncoder.encode(userProfile.getPassword()));
+            userProfile.setRole(role);
             repository.insert(userProfile);
             var jwtToken = jwtService.generateToken(userProfile);
             AuthenticationResponse authenticationResponse = new AuthenticationResponse();

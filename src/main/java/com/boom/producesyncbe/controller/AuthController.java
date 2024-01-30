@@ -1,6 +1,7 @@
 package com.boom.producesyncbe.controller;
 
 import com.boom.producesyncbe.Data.AuthenticationResponse;
+import com.boom.producesyncbe.Data.Role;
 import com.boom.producesyncbe.Data.UserProfile;
 import com.boom.producesyncbe.service.CreateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,16 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/create")
+    @PostMapping("/seller/create")
     @CrossOrigin
     public ResponseEntity<AuthenticationResponse> createResourceSeller(@RequestBody UserProfile userProfile) {
-        return createUserService.createUser(userProfile);
+        return createUserService.createUser(userProfile, Role.SELLER);
+    }
+
+    @PostMapping("/buyer/create")
+    @CrossOrigin
+    public ResponseEntity<AuthenticationResponse> createResourceBuyer(@RequestBody UserProfile userProfile) {
+        return createUserService.createUser(userProfile, Role.BUYER);
     }
 
     @PostMapping("/login")
