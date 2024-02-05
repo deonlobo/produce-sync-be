@@ -1,5 +1,6 @@
 package com.boom.producesyncbe.config;
 
+import com.boom.producesyncbe.Data.UserProfile;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,12 +31,18 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+    public Claims extractClaims(String token){
+        return extractAllClaims(token);
     }
 
+    public String generateToken(UserProfile userDetails){
+        Map<String, String> extraClaims = new HashMap<>();
+        extraClaims.put("role", userDetails.getRole().toString());
+        extraClaims.put("id",userDetails.getId());
+        return generateToken(extraClaims, userDetails);    }
+
     public String generateToken(
-            Map<String , Objects> extraClaims,
+            Map<String , String> extraClaims,
             UserDetails userDetails
     ){
         return Jwts.builder()

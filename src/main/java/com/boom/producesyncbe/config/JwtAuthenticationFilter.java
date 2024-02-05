@@ -34,11 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        /*final String authHeader = request.getHeader("Authorization");
-        final String jwt;*/
+        final String authHeader = request.getHeader("Authorization");
+        //final String jwt;
         final String username;
 
-        //cookie based authentication
+        //First try Cookie based authentication
         String token = null;
         if(request.getCookies() != null){
             for(Cookie cookie: request.getCookies()){
@@ -48,15 +48,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        if(token == null){
-            filterChain.doFilter(request, response);
-            return;
+        if(token==null) {
+            //Try authenticating the token if the cookie is empty
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+            token = authHeader.substring(7);
         }
-      /*  if(authHeader == null || !authHeader.startsWith("Bearer ")){
+        /*if(token == null){
             filterChain.doFilter(request,response);
             return;
-        }
-        jwt = authHeader.substring(7);*/
+        }*/
+        //jwt = authHeader.substring(7);
         username = jwtService.extractUserName(token);
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

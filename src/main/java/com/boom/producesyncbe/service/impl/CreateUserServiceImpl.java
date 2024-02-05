@@ -1,6 +1,7 @@
 package com.boom.producesyncbe.service.impl;
 
 import com.boom.producesyncbe.Data.AuthenticationResponse;
+import com.boom.producesyncbe.commonutils.HelperFunction;
 import com.boom.producesyncbe.config.JwtService;
 import com.boom.producesyncbe.repository.UserProfileRepository;
 import com.boom.producesyncbe.Data.Role;
@@ -64,7 +65,7 @@ public class CreateUserServiceImpl implements CreateUserService {
                         userProfile.getPassword()
                 ));
         var user = repository.findByUsername(userProfile.getUsername());
-        var jwtToken = jwtService.generateToken(userProfile);
+        var jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
         return authenticationResponse;
