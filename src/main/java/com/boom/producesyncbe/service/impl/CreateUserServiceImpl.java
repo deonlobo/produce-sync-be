@@ -8,6 +8,7 @@ import com.boom.producesyncbe.Data.Role;
 import com.boom.producesyncbe.Data.UserProfile;
 import com.boom.producesyncbe.service.AutoIncrementService;
 import com.boom.producesyncbe.service.CreateUserService;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,17 +59,20 @@ public class CreateUserServiceImpl implements CreateUserService {
     }
 
     @Override
-    public AuthenticationResponse authenticate(UserProfile userProfile) {
+    public ResponseEntity<AuthenticationResponse> authenticate(UserProfile userProfile, Role role) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userProfile.getUsername(),
                         userProfile.getPassword()
                 ));
         var user = repository.findByUsername(userProfile.getUsername());
+        if(!user.getRole().equals(role)){
+            return ResponseEntity.status(403).body(new AuthenticationResponse());
+        }
         var jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
-        return authenticationResponse;
+        return ResponseEntity.ok(authenticationResponse);
     }
 
 /*    @Override

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 public interface CreateUserService {
     ResponseEntity<AuthenticationResponse> createUser(UserProfile userProfile, Role role);
 
-    AuthenticationResponse authenticate(UserProfile userProfile);
+    ResponseEntity<AuthenticationResponse> authenticate(UserProfile userProfile, Role role);
 /*
     UserDetails loadUserByUsername(String username);*/
 }

@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: produce_sync
+      port: 27017
+      host: localhost
+
+gcp:
+  config:
+    file: gcp-account-file.json
+  project:
+    id: eighth-gamma-413101
+  bucket:
+    id: productsync_product
+

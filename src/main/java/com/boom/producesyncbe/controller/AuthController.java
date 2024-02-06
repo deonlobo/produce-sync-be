@@ -32,9 +32,15 @@ public class AuthController {
         return createUserService.createUser(userProfile, Role.BUYER);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/seller/login")
     @CrossOrigin
     public ResponseEntity<AuthenticationResponse> loginSeller(@RequestBody UserProfile userProfile) {
-        return ResponseEntity.ok(createUserService.authenticate(userProfile));
+        return createUserService.authenticate(userProfile, Role.SELLER);
+    }
+
+    @PostMapping("/buyer/login")
+    @CrossOrigin
+    public ResponseEntity<AuthenticationResponse> loginBuyer(@RequestBody UserProfile userProfile) {
+        return createUserService.authenticate(userProfile, Role.BUYER);
     }
 }

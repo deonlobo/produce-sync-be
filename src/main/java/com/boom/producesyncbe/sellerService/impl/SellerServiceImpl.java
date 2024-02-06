@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SellerServiceImpl implements SellerService {
     @Autowired
@@ -22,4 +24,11 @@ public class SellerServiceImpl implements SellerService {
         product.setAvailableQuantity(product.getQuantity());
         return ResponseEntity.ok(productRepository.save(product));
     }
+
+    @Override
+    public ResponseEntity<List<Product>> fetchAllSellerProducts(String sellerId) {
+        return ResponseEntity.ok(productRepository.findBySellerId(sellerId));
+    }
+
+
 }
