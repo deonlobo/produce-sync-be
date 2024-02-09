@@ -1,6 +1,7 @@
 package com.boom.producesyncbe.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ public class UserProfile implements UserDetails {
     private String firstName;
     private String lastName;
     private Gender gender;
+    @Transient
     private Address address;
     private long createdTs;
     private String username;

@@ -1,12 +1,35 @@
 package com.boom.producesyncbe.Data;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Address {
+    @Id
+    private String id;
+    private Role role;
     private String addressLine1;
     private String city;
     private String province;
     private String country;
     private String postalCode;
-    private GeoLocation geoLocation;
+    private Location location;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public String getAddressLine1() {
         return addressLine1;
@@ -48,11 +71,11 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public GeoLocation getGeoLocation() {
-        return geoLocation;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setGeoLocation(GeoLocation geoLocation) {
-        this.geoLocation = geoLocation;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

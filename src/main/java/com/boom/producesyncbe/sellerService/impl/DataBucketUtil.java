@@ -47,7 +47,9 @@ public class DataBucketUtil {
 
             // Generate a random integer between 0 (inclusive) and 100 (exclusive)
             checkFileExtension(fileName);
-            Blob blob = bucket.create( directory.replace(":","") + "/" + fileName , fileData, contentType);
+            Random random = new Random();
+            int randomNumber = random.nextInt(100);
+            Blob blob = bucket.create( directory.replace(":","") + "/" + fileName + randomNumber , fileData, contentType);
 
             if(blob != null){
                 return blob.getName();
