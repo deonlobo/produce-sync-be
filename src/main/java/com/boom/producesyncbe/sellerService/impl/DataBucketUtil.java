@@ -49,7 +49,7 @@ public class DataBucketUtil {
             checkFileExtension(fileName);
             Random random = new Random();
             int randomNumber = random.nextInt(100);
-            Blob blob = bucket.create( directory.replace(":","") + "/" + fileName + randomNumber , fileData, contentType);
+            Blob blob = bucket.create( directory.replace(":","") + "/" + randomNumber + fileName , fileData, contentType);
 
             if(blob != null){
                 return blob.getName();
