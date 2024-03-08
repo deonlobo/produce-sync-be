@@ -1,5 +1,7 @@
 package com.boom.producesyncbe.controller;
 
+import com.boom.producesyncbe.buyerData.Order;
+import com.boom.producesyncbe.buyerData.OrderProduct;
 import com.boom.producesyncbe.buyerService.BuyerService;
 import com.boom.producesyncbe.commonutils.HelperFunction;
 import com.boom.producesyncbe.sellerData.Product;
@@ -7,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +30,19 @@ public class BuyerController {
     public ResponseEntity<List<Product>> getNearBySellerProducts(@RequestHeader("Cookie") String cookieHeader){
         String buyerId = helperFunction.getClaimsUserId(cookieHeader);
         return buyerService.getNearBySellerProducts(buyerId);
+    }
+
+    @GetMapping("/product/details")
+    public ResponseEntity<Product> getProductDetails(@RequestParam("productId") String productId,
+                                                            @RequestHeader("Cookie") String cookieHeader){
+        return buyerService.getProductDetails(productId);
+    }
+
+    //Create or update the order and add products to the cart order
+    @PostMapping("/cart/add")
+    public ResponseEntity<Order> addProductToCart(@RequestHeader("Cookie") String cookieHeader,
+                                                   @RequestBody OrderProduct orderProduct){
+        String buyerId = helperFunction.getClaimsUserId(cookieHeader);
+        return buyerService.addProductToCart(orderProduct,buyerId);
     }
 }

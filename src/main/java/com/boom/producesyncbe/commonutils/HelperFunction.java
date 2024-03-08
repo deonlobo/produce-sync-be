@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ObjectStreamClass;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 @Service
@@ -25,5 +27,11 @@ public class HelperFunction {
             return claims.get("id", String.class);
         else
             return null;
+    }
+
+    public static Double roundUp(Double value){
+        BigDecimal roundedVal = new BigDecimal(value)
+                .setScale(2, RoundingMode.HALF_UP); // Round to 2 decimal places
+        return roundedVal.doubleValue();
     }
 }

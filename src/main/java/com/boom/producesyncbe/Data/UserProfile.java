@@ -14,6 +14,7 @@ import java.util.List;
 public class UserProfile implements UserDetails {
     @Id
     private String id;
+    private String brandName;
     private String firstName;
     private String lastName;
     private Gender gender;
@@ -95,6 +96,14 @@ public class UserProfile implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     @Override

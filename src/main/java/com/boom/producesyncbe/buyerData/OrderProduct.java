@@ -1,14 +1,13 @@
-package com.boom.producesyncbe.sellerData;
+package com.boom.producesyncbe.buyerData;
 
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
-public class Product {
+public class OrderProduct {
     @Id
     private String productId;
     private String sellerId;
-    private String brandName;
     private String productName;
     private String productDescription;
     private List<String> productImages;
@@ -16,15 +15,6 @@ public class Product {
     private Double perUnitPrice;
     private String unit;
     private Double total;
-    private Integer availableQuantity;
-
-    public Integer getAvailableQuantity() {
-        return availableQuantity;
-    }
-
-    public void setAvailableQuantity(Integer availableQuantity) {
-        this.availableQuantity = availableQuantity;
-    }
 
     public String getProductId() {
         return productId;
@@ -96,13 +86,5 @@ public class Product {
 
     public void setTotal(Double total) {
         this.total = total;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
     }
 }
