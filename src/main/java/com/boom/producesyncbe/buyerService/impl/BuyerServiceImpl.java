@@ -7,12 +7,15 @@ import com.boom.producesyncbe.buyerData.OrderProduct;
 import com.boom.producesyncbe.buyerData.Status;
 import com.boom.producesyncbe.buyerService.BuyerService;
 import com.boom.producesyncbe.commonutils.HelperFunction;
+import com.boom.producesyncbe.repository.AddressRepoMongoTemplate;
 import com.boom.producesyncbe.repository.AddressRepository;
 import com.boom.producesyncbe.repository.OrderRepository;
 import com.boom.producesyncbe.repository.ProductRepository;
 import com.boom.producesyncbe.sellerData.Product;
 import com.boom.producesyncbe.service.AutoIncrementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +39,7 @@ public class BuyerServiceImpl implements BuyerService {
     private AutoIncrementService autoIncrementService;
 
     @Override
-    public ResponseEntity<List<Product>> getNearBySellerProducts(String buyerId) {
+    public ResponseEntity<List<Product>> getNearBySellerProducts(String buyerId, String searchTerm) {
         Optional<Address> buyerAddress = addressRepository.findById(buyerId);
         List<Product> products = new ArrayList<>();
         if(buyerAddress.isPresent()){
@@ -46,9 +49,13 @@ public class BuyerServiceImpl implements BuyerService {
                     address.getLocation().getCoordinates().get(0),
                     address.getLocation().getCoordinates().get(1),
                     0, 20000);
+            List<String> sellerIdList = new ArrayList<>();
             nearBySellers.forEach(seller->{
-                products.addAll(productRepository.findBySellerId(seller.getId()));
+                sellerIdList.add(seller.getId());
+                //products.addAll(productRepository.findBySellerId(seller.getId()));
             });
+            Sort sortByPerUnitPrice = Sort.by(Sort.Direction.ASC, "perUnitPrice");
+            products = productRepository.findBySellerIdInAndProductNameRegex(sellerIdList, searchTerm, sortByPerUnitPrice);
         }
         return ResponseEntity.ok(products);
     }
@@ -66,7 +73,7 @@ public class BuyerServiceImpl implements BuyerService {
             return ResponseEntity.status(422).body(new Order());
         }
         List<Order> openOrderList = orderRepository.findByBuyerIdAndStatus(buyerId, Status.OPEN.toString());
-        if (openOrderList.size() == 0) {
+        if (openOrderList.isEmpty()) {
             return createOrder(orderProduct, productDetails, buyerId);
         }
         if (openOrderList.size() == 1) {
@@ -146,4 +153,65 @@ public class BuyerServiceImpl implements BuyerService {
 
         return ResponseEntity.ok(order);
     }
+
+    @Override
+    public ResponseEntity<Order> fetchCartDetails(String buyerId) {
+        List<Order> openOrderList = orderRepository.findByBuyerIdAndStatus(buyerId, Status.OPEN.toString());
+        if (openOrderList.isEmpty()) {
+            return ResponseEntity.ok().body(new Order());
+        }else{
+            return ResponseEntity.ok(openOrderList.get(0));
+        }
+    }
+
+    @Override
+    public ResponseEntity<Order> confirmOrder(String buyerId) {
+        List<Order> openOrderList = orderRepository.findByBuyerIdAndStatus(buyerId, Status.OPEN.toString());
+        if (openOrderList.isEmpty()) {
+            return ResponseEntity.badRequest().body(new Order());
+        }else{
+            Order openOrder = openOrderList.get(0);
+            if(openOrder.getProductList().isEmpty()){
+                return ResponseEntity.badRequest().body(new Order());
+            }
+            openOrder.setStatus(Status.CONFIRMED);
+            openOrder.setUpdatedTs(Instant.now().toEpochMilli());
+
+            // For Quantity availably
+            openOrder.getProductList().forEach(orderProduct->{
+                Product pricePrd = productRepository.findByProductId(orderProduct.getProductId());
+                if (orderProduct.getQuantity() > pricePrd.getAvailableQuantity()) {
+                    openOrder.getProductQtyExceeded().add(pricePrd.getProductName());
+                }
+            });
+            if(!openOrder.getProductQtyExceeded().isEmpty()){
+                return ResponseEntity.status(422).body(openOrder);
+            }
+            orderRepository.save(openOrder);
+            return ResponseEntity.ok(openOrder);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Order> deleteProduct(String buyerId, String productId) {
+        List<Order> openOrderList = orderRepository.findByBuyerIdAndStatus(buyerId, Status.OPEN.toString());
+        if (openOrderList.isEmpty()) {
+            return ResponseEntity.badRequest().body(new Order());
+        }else {
+            Order openOrder = openOrderList.get(0);
+            //Remove if product exists
+            openOrder.getProductList().removeIf(product -> product.getProductId().equals(productId));
+            //Calculate the new total
+            AtomicReference<Double> total = new AtomicReference<>(0.0);
+            openOrder.getProductList().forEach(prod->{
+                total.updateAndGet(v -> v + prod.getTotal());
+            });
+            openOrder.setOrderTotal(HelperFunction.roundUp(total.get()));
+            openOrder.setUpdatedTs(Instant.now().toEpochMilli());
+            orderRepository.save(openOrder);
+
+            return ResponseEntity.ok(openOrder);
+        }
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.boom.producesyncbe.Data;
 
+import com.boom.producesyncbe.sellerData.Product;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document
 public class Address {
@@ -14,6 +17,15 @@ public class Address {
     private String country;
     private String postalCode;
     private Location location;
+    private List<Product> products;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public String getId() {
         return id;

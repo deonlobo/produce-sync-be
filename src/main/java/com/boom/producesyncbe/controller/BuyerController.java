@@ -1,5 +1,6 @@
 package com.boom.producesyncbe.controller;
 
+import com.boom.producesyncbe.Data.Address;
 import com.boom.producesyncbe.buyerData.Order;
 import com.boom.producesyncbe.buyerData.OrderProduct;
 import com.boom.producesyncbe.buyerService.BuyerService;
@@ -27,9 +28,10 @@ public class BuyerController {
     }
 
     @GetMapping("/nearby/seller/products")
-    public ResponseEntity<List<Product>> getNearBySellerProducts(@RequestHeader("Cookie") String cookieHeader){
+    public ResponseEntity<List<Product>> getNearBySellerProducts(@RequestParam String search,
+                                                                @RequestHeader("Cookie") String cookieHeader){
         String buyerId = helperFunction.getClaimsUserId(cookieHeader);
-        return buyerService.getNearBySellerProducts(buyerId);
+        return buyerService.getNearBySellerProducts(buyerId, search);
     }
 
     @GetMapping("/product/details")
@@ -44,5 +46,24 @@ public class BuyerController {
                                                    @RequestBody OrderProduct orderProduct){
         String buyerId = helperFunction.getClaimsUserId(cookieHeader);
         return buyerService.addProductToCart(orderProduct,buyerId);
+    }
+
+    @GetMapping("/cart/fetch")
+    public ResponseEntity<Order> fetchCartDetails(@RequestHeader("Cookie") String cookieHeader){
+        String buyerId = helperFunction.getClaimsUserId(cookieHeader);
+        return buyerService.fetchCartDetails(buyerId);
+    }
+
+    @PutMapping("/cart/confirm")
+    public ResponseEntity<Order> confirmOrder(@RequestHeader("Cookie") String cookieHeader){
+        String buyerId = helperFunction.getClaimsUserId(cookieHeader);
+        return buyerService.confirmOrder(buyerId);
+    }
+
+    @PutMapping("/cart/delete/product")
+    public ResponseEntity<Order> deleteCart(@RequestParam String productId,
+                                            @RequestHeader("Cookie") String cookieHeader){
+        String buyerId = helperFunction.getClaimsUserId(cookieHeader);
+        return buyerService.deleteProduct(buyerId,productId);
     }
 }

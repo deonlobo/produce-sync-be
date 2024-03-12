@@ -1,6 +1,7 @@
 package com.boom.producesyncbe.buyerData;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
@@ -19,6 +20,16 @@ public class Order {
     private Status status;
     private long createdTs = Instant.now().toEpochMilli();
     private long updatedTs = Instant.now().toEpochMilli();
+    @Transient
+    private List<String> productQtyExceeded = new ArrayList<>();
+
+    public List<String> getProductQtyExceeded() {
+        return productQtyExceeded;
+    }
+
+    public void setProductQtyExceeded(List<String> productQtyExceeded) {
+        this.productQtyExceeded = productQtyExceeded;
+    }
 
     public String getOrderId() {
         return orderId;
