@@ -62,20 +62,21 @@ public class DataBucketUtil {
     }
 
     private File convertFile(MultipartFile file) {
-
-        try{
-            if(file.getOriginalFilename() == null){
+        try {
+            if (file.isEmpty()) {
+                throw new IllegalArgumentException("File is empty");
+            }
+            if(file.getOriginalFilename() == null) {
                 throw new RuntimeException("Original file name is null");
             }
-            File convertedFile = new File(file.getOriginalFilename());
-            FileOutputStream outputStream = new FileOutputStream(convertedFile);
-            outputStream.write(file.getBytes());
-            outputStream.close();
+            File convertedFile = File.createTempFile(file.getOriginalFilename(), ".tmp");
+            file.transferTo(convertedFile);
             return convertedFile;
-        }catch (Exception e){
-            throw new RuntimeException("An error has occurred while converting the file");
+        } catch (IOException e) {
+            throw new RuntimeException("An error occurred while converting the file", e);
         }
     }
+
 
     private String checkFileExtension(String fileName) {
         if(fileName != null && fileName.contains(".")){
