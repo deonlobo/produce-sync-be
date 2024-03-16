@@ -29,9 +29,21 @@ public class HelperFunction {
             return null;
     }
 
+    public String getBuyerIdFromToken(String authHeader) {
+        // Extract the token from the authorization header
+        String token = authHeader.replace("Bearer ", ""); // Remove "Bearer " prefix if present
+        Claims claims = jwtService.extractClaims(token);
+        if(Objects.nonNull(claims))
+            return claims.get("id", String.class);
+        else
+            return null;
+    }
+
     public static Double roundUp(Double value){
         BigDecimal roundedVal = new BigDecimal(value)
                 .setScale(2, RoundingMode.HALF_UP); // Round to 2 decimal places
         return roundedVal.doubleValue();
     }
+
+
 }

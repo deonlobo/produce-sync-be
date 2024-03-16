@@ -2,15 +2,13 @@ package com.boom.producesyncbe.buyerService.impl;
 
 import com.boom.producesyncbe.Data.Address;
 import com.boom.producesyncbe.Data.Role;
+import com.boom.producesyncbe.Data.UserProfile;
 import com.boom.producesyncbe.buyerData.Order;
 import com.boom.producesyncbe.buyerData.OrderProduct;
 import com.boom.producesyncbe.buyerData.Status;
 import com.boom.producesyncbe.buyerService.BuyerService;
 import com.boom.producesyncbe.commonutils.HelperFunction;
-import com.boom.producesyncbe.repository.AddressRepoMongoTemplate;
-import com.boom.producesyncbe.repository.AddressRepository;
-import com.boom.producesyncbe.repository.OrderRepository;
-import com.boom.producesyncbe.repository.ProductRepository;
+import com.boom.producesyncbe.repository.*;
 import com.boom.producesyncbe.sellerData.Product;
 import com.boom.producesyncbe.service.AutoIncrementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,8 @@ public class BuyerServiceImpl implements BuyerService {
     ProductRepository productRepository;
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    UserProfileRepository userProfileRepository;
 
     @Autowired
     private AutoIncrementService autoIncrementService;
@@ -186,7 +186,17 @@ public class BuyerServiceImpl implements BuyerService {
             });
             if(!openOrder.getProductQtyExceeded().isEmpty()){
                 return ResponseEntity.status(422).body(openOrder);
+            }else{
+                openOrder.getProductList().forEach(orderProduct->{
+                    Product pricePrd = productRepository.findByProductId(orderProduct.getProductId());
+                    pricePrd.setAvailableQuantity(pricePrd.getAvailableQuantity()-orderProduct.getQuantity());
+                    productRepository.save(pricePrd);
+                });
             }
+            UserProfile userProfile = userProfileRepository.findByUserId(buyerId);
+            openOrder.setBuyerName(userProfile.getFirstName() + " " + userProfile.getLastName());
+            Address buyerAddress = addressRepository.findByUserId(buyerId);
+            openOrder.setAddress(buyerAddress);
             orderRepository.save(openOrder);
             return ResponseEntity.ok(openOrder);
         }
@@ -212,6 +222,43 @@ public class BuyerServiceImpl implements BuyerService {
 
             return ResponseEntity.ok(openOrder);
         }
+    }
+
+    @Override
+    public ResponseEntity<String> isTokenOfUser(String buyerId, String username) {
+        UserProfile buyer = userProfileRepository.findByUserId(buyerId);
+        if(!buyer.getUsername().isEmpty() && buyer.getUsername().equals(username)){
+            return ResponseEntity.ok("The token is of the same user");
+        }else{
+            return ResponseEntity.status(409).body("The token is not valid for this email");
+        }
+    }
+
+    @Override
+    public Boolean isProductOfSameSeller(OrderProduct orderProduct, String buyerId) {
+        Product productDetails = productRepository.findByProductId(orderProduct.getProductId());
+        List<Order> openOrderList = orderRepository.findByBuyerIdAndStatus(buyerId, Status.OPEN.toString());
+        if (openOrderList.isEmpty()) {
+            return true;
+        }
+        if (openOrderList.size() == 1) {
+            Order openOrder = openOrderList.get(0);
+            return openOrder.getSellerId().equals(productDetails.getSellerId());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public ResponseEntity<Address> fetchSellerAddress(String sellerId) {
+        return ResponseEntity.ok(addressRepository.findByUserId(sellerId));
+    }
+
+    @Override
+    public ResponseEntity<UserProfile> fetchUserProfile(String buyerId) {
+        UserProfile userProfile = userProfileRepository.findByUserId(buyerId);
+        userProfile.setAddress(addressRepository.findByUserId(buyerId));
+        return ResponseEntity.ok(userProfile);
     }
 
 }

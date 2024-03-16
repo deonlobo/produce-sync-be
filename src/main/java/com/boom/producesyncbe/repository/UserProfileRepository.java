@@ -7,4 +7,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories
 public interface UserProfileRepository extends MongoRepository<UserProfile,String> {
     UserProfile findByUsername(String username);
+
+    UserProfile findByUserId(String buyerId);
 }

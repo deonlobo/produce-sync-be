@@ -27,10 +27,9 @@ public class FileServiceImpl implements FileService {
             if(originalFileName == null){
                 throw new RuntimeException("Original file name is null");
             }
-            Path path = new File(originalFileName).toPath();
 
             try {
-                String contentType = Files.probeContentType(path);
+                String contentType = file.getContentType();
                 String fileUrl = dataBucketUtil.uploadFile(file, originalFileName, contentType, directory);
 
                 if (fileUrl != null) {
@@ -41,7 +40,6 @@ public class FileServiceImpl implements FileService {
                 throw new RuntimeException("Error occurred while uploading");
             }
         });
-        System.out.println("here");
         return ResponseEntity.ok(inputFiles);
     }
 }

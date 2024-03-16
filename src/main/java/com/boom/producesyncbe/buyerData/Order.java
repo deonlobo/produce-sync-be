@@ -1,5 +1,6 @@
 package com.boom.producesyncbe.buyerData;
 
+import com.boom.producesyncbe.Data.Address;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,6 +14,7 @@ public class Order {
     @Id
     private String orderId;
     private String buyerId;
+    private String buyerName;
     private String sellerId;
     private String brandName;
     private List<OrderProduct> productList = new ArrayList<>();
@@ -20,6 +22,7 @@ public class Order {
     private Status status;
     private long createdTs = Instant.now().toEpochMilli();
     private long updatedTs = Instant.now().toEpochMilli();
+    private Address address;
     @Transient
     private List<String> productQtyExceeded = new ArrayList<>();
 
@@ -101,5 +104,21 @@ public class Order {
 
     public void setUpdatedTs(long updatedTs) {
         this.updatedTs = updatedTs;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
     }
 }

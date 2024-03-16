@@ -1,6 +1,7 @@
 package com.boom.producesyncbe.buyerService;
 
 import com.boom.producesyncbe.Data.Address;
+import com.boom.producesyncbe.Data.UserProfile;
 import com.boom.producesyncbe.buyerData.Order;
 import com.boom.producesyncbe.buyerData.OrderProduct;
 import com.boom.producesyncbe.sellerData.Product;
@@ -22,4 +23,12 @@ public interface BuyerService {
     ResponseEntity<Order> confirmOrder(String buyerId);
 
     ResponseEntity<Order> deleteProduct(String buyerId, String productId);
+
+    ResponseEntity<String> isTokenOfUser(String buyerId, String username);
+
+    Boolean isProductOfSameSeller(OrderProduct orderProduct, String buyerId);
+
+    ResponseEntity<Address> fetchSellerAddress(String sellerId);
+
+    ResponseEntity<UserProfile> fetchUserProfile(String buyerId);
 }

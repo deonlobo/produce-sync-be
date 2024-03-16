@@ -9,7 +9,7 @@ import java.util.List;
 @Document
 public class Address {
     @Id
-    private String id;
+    private String userId;
     private Role role;
     private String addressLine1;
     private String city;
@@ -28,11 +28,11 @@ public class Address {
     }
 
     public String getId() {
-        return id;
+        return userId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public Role getRole() {
