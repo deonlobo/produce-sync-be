@@ -16,7 +16,7 @@ public interface ProductRepository  extends MongoRepository<Product,String> {
 
     List<Product> findBySellerIdIn(List<String> sellerIds);
 
-    @Query("{'sellerId': { $in: ?0 }, 'productName': { $regex: ?1, $options: 'i' }}")
-    List<Product> findBySellerIdInAndProductNameRegex(List<String> sellerIds, String productName, Sort sort);
+    @Query("{'sellerId': { $in: ?0 },$or: [{'productName': { $regex: ?1, $options: 'i' }},{'productDescription': { $regex: ?1, $options: 'i' }},{'brandName': { $regex: ?1, $options: 'i' }}]}")
+    List<Product> findBySellerIdInAndProductNameRegex(List<String> sellerIds, String searchTerm, Sort sort);
 
 }
