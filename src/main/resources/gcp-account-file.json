@@ -1,13 +1,13 @@
 {
   "type": "service_account",
   "project_id": "eighth-gamma-413101",
-  "private_key_id": "92541ebb7a3179c84ca40b43fe4e86a01b4baf58",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDSHdPW7d+Tg9EM\n/jq6JDAfloFaoMWS9za2S+8SJk4WVUj1MWoyHdmluq+lPW89qzdUDgqDkHiDufdY\nKiUxjzO81F6h6PZzEp4BEFEOrsutNV6ZeOJPF9Rldy2JODEkGo/7QTKCtQTyMIB/\nJN6+VEfv+SG6fQ12HY/K2g0Qju1xBChUtmvhf3L11UZ4cTdZneebwRDIhqrOgr39\nASMnpHd7YXazI1QUbgf486tVWM1d0hI4UBAyNhMsbz/9YygfoLH4esmSt4kAECbd\nZ834e7eGaJpY9/kew+BdenfqQio4huuK9D+xIsFP8wkpoCBAfAW7NAG4WflU6YGw\n5i/CfsYbAgMBAAECggEAAhoBReuQKmoNm7spPDZjctVvCsiD4WHunqkoxX4zlr6Y\nobcyUDkDNcilvBnetHezcHhJe6JkyjCAfFXDlHjRtChNoAH0ARelE+6lWOe/qsZX\nYWKXpOHgonksL+yrdSh82y7+Qddsqr14c40bWzz9kTVlNHfOvCk0iHtg2RMM5e33\nk5R/TEy8RiSit0BKvm69yuqUqDcmMa+v9qvOwRf16QMKK7B247hr84K6Rm72s2Bc\nXofsZFkiXGwMnEWd5u5royVQXKiqTkgiWe5mZzna2vm5N/U9jaSntuo/T6+SUAWE\nyMwrMIlF8oFfZiRhKRda9ORS2hSfDchDcjzqpsw+oQKBgQDoodw+GB1CnMFWlijr\n1WN54ugb8azF+MyAwfc1eHfR7/f6DvgX1fiyJH7WUsZL0fWyTwUAlB1N4hIC4txI\nopQ8iwOK1L9eimfffzqw42fHEVCQgo7S3n9ITcZGdhd+TFAZ7xbO19r8UjX2DRjZ\nWVpehhkfqQ0vHuH0UPLZRgCSewKBgQDnOPl4Q5wnzbCZbFX3RGFlEYzFqdG6VH0p\nXkbhz7Nhy9739oU5cCF/QPUDa+zdMNczoInF5PhGJbA3ULkvVd5ZFmTi+bYtmshA\nUATB13d+4ERKAsDSVH6lHfk7DFQR0VUpW3GoB8Txy23VAnLZwgYZ7hy9lOAqtmTN\nbE5gjn+Y4QKBgQCMc60VkFmaLipMrLxoJp24qVaaCH/Xxy8xTeqDTgiJp+iAASmo\nunc8luw9Whx/CnTdAvhyMPrAWw2k0HNPJ1l4dDXfTDN+UPIF7jrxMVsmxT1vAmRY\nzBzs+ogLYqEsj8aM4d1TZN/CF6CcvauTDm+RQkVI6DgdivfBGl6E787IoQKBgB/h\nTyQxzjn+tjaxJTkuiG8y+EHYpD4YoBkwEn3X8VeukFOH/d5pg3TUM/QA0Wu97C4G\nGHjclQ6265D05FOOd1W5LLfOzjuDd9DGN6GyX5tyuHer4YIefEev1kk57e12+1L0\ndLtCNvlPnxkbeVJk2gqBNh09hZreAw//ut69RwKBAoGBANGQPCkdHNsPbmECrR4c\nViLzlOxHkMvCps5Y/NoOS7YpP2Z9aRQej5L+hXWuZreZgxzugyOawPvwb5ufyXJ2\nDQ35hWmLnLEodxSi83Qqj1qXRjWzLF3C7k5t5mJQIQGJU2JHkEe77+vKm3J0tjQ0\nQGAJwFZ3sWx8zsWKqSfamZOS\n-----END PRIVATE KEY-----\n",
-  "client_email": "producesyncserviceacc@eighth-gamma-413101.iam.gserviceaccount.com",
+  "private_key_id": "CREATE AND PLACE YOUR GCP KEY IN THIS DOCUMENT",
+  "private_key": "",
+  "client_email": "",
   "client_id": "108966254729908742774",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/producesyncserviceacc%40eighth-gamma-413101.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+  "auth_uri": "",
+  "token_uri": "",
+  "auth_provider_x509_cert_url": "",
+  "client_x509_cert_url": "",
+  "universe_domain": ""
 }
